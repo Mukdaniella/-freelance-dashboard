@@ -1,35 +1,56 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.tsx
+import React, { useContext, useState } from "react";
+import { AppProvider, AppStateContext } from "./state";
+import { ClientCard } from "./components/ClientCard";
+import { ProjectList } from "./components/ProjectList";
+import { DashboardStats } from "./components/DashboardStats";
 
-function App() {
-  const [count, setCount] = useState(0)
+const DashboardInner = () => {
+  const ctx = useContext(AppStateContext);
+  if (!ctx) return null;
+  const { state } = ctx;
+  const [q, setQ] = useState("");
+
+  const filteredProjects = state.projects.filter(p => {
+    if (!q) return true;
+    return p.title.toLowerCase().includes(q.toLowerCase()) || (state.clients.find(c => c.id === p.clientId)?.name || "").toLowerCase().includes(q.toLowerCase());
+  });
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="p-6 max-w-5xl mx-auto">
+      <h1 className="text-2xl mb-4">Freelance Dashboard</h1>
+      <div className="mb-4">
+        <input value={q} onChange={e => setQ(e.target.value)} placeholder="Search projects or clients..." className="p-2 border rounded w-full" />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
 
-export default App
+      <DashboardStats projects={filteredProjects} />
+
+      <section className="mt-6">
+        <h2 className="text-xl mb-2">Clients</h2>
+        <div className="grid grid-cols-2 gap-4">
+          {state.clients.map(c => <ClientCard key={c.id} client={c} />)}
+        </div>
+      </section>
+
+      <section className="mt-6">
+        <h2 className="text-xl mb-2">Projects</h2>
+        <ProjectList projects={filteredProjects} />
+      </section>
+
+      <section className="mt-6">
+        <h2>Payments</h2>
+        <ul>
+          {state.payments.map((pay, i) => (
+            <li key={i}>{pay.projectId} — ${pay.amount} — {new Date(pay.date).toLocaleString()}</li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  );
+};
+
+export const App = () => (
+  <AppProvider>
+    <DashboardInner />
+  </AppProvider>
+);
