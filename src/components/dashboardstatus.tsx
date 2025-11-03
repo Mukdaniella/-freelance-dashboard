@@ -1,24 +1,53 @@
 // src/components/DashboardStats.tsx
 import React from "react";
-import { Project } from "../models";
+import { Project, Payment } from "../model";
 import { countPaidUnpaid } from "../utils";
 
-export const DashboardStats: React.FC<{ projects: Project[] }> = ({ projects }) => {
+interface DashboardStatsProps {
+  projects?: Project[];
+  payments?: Payment[];
+}
+
+export const DashboardStats: React.FC<DashboardStatsProps> = ({
+  projects = [],
+  payments = [],
+}) => {
   const totals = projects.length;
   const { paid, unpaid } = countPaidUnpaid(projects);
+
+  // Calculate total payment amount based on PAID projects
+  const totalPayments = projects
+    .filter((p) => p.paymentStatus === "paid")
+    .reduce((sum, p) => sum + p.budget, 0);
+
   return (
     <div className="grid grid-cols-3 gap-4">
-      <div className="p-3 border rounded">
-        <div className="text-sm">Total Projects</div>
+      {/* Total Projects */}
+      <div className="p-3 border rounded text-center">
+        <div className="text-sm text-gray-500">Total Projects</div>
         <div className="text-2xl font-bold">{totals}</div>
       </div>
-      <div className="p-3 border rounded">
-        <div className="text-sm">Paid</div>
-        <div className="text-2xl font-bold">{paid}</div>
+
+      {/* Paid Projects + Total Payments */}
+      <div className="p-3 border rounded text-center flex flex-col items-center justify-center">
+        <div className="flex justify-between w-full">
+          <div className="flex-1 text-center border-r">
+            <div className="text-sm text-gray-500">Paid Projects</div>
+            <div className="text-2xl font-bold text-green-600">{paid}</div>
+          </div>
+          <div className="flex-1 text-center">
+            <div className="text-sm text-gray-500">Total Payments</div>
+            <div className="text-2xl font-bold text-blue-600">
+              ${totalPayments.toLocaleString()}
+            </div>
+          </div>
+        </div>
       </div>
-      <div className="p-3 border rounded">
-        <div className="text-sm">Unpaid</div>
-        <div className="text-2xl font-bold">{unpaid}</div>
+
+      {/* Unpaid Projects */}
+      <div className="p-3 border rounded text-center">
+        <div className="text-sm text-gray-500">Unpaid Projects</div>
+        <div className="text-2xl font-bold text-red-500">{unpaid}</div>
       </div>
     </div>
   );

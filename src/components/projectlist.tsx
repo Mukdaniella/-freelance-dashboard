@@ -1,7 +1,7 @@
 // src/components/ProjectList.tsx
 import React, { useContext } from "react";
 import { AppStateContext } from "../state";
-import { Project } from "../models";
+import { Project } from "../model";
 
 type Props = {
   projects: Project[];

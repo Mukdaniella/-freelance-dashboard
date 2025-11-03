@@ -1,6 +1,6 @@
 // src/components/ClientCard.tsx
 import React from "react";
-import { Client } from "../models";
+import { Client } from "../model";
 
 type Props = {
   client: Client;
