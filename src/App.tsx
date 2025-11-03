@@ -1,5 +1,5 @@
 // src/App.tsx
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import { AppProvider, AppStateContext } from "./state";
 import { ClientCard } from "./components/clientcard";
 import { ProjectList } from "./components/projectlist";
@@ -35,46 +35,48 @@ const DashboardInner = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white flex">
       {/* Sidebar */}
-      <aside className="w-64 p-6 border-r border-slate-700 flex flex-col">
-        <h1 className="text-2xl font-bold mb-8 text-center text-indigo-400">
-          Freelance Dashboard
-        </h1>
-        <nav className="space-y-4">
-          <button
-            onClick={() => setView("dashboard")}
-            className={`block w-full text-left py-2 px-3 rounded-md transition ${
-              view === "dashboard" ? "bg-slate-700" : "hover:bg-slate-700"
-            }`}
-          >
-            Dashboard
-          </button>
-          <button
-            onClick={() => setView("clients")}
-            className={`block w-full text-left py-2 px-3 rounded-md transition ${
-              view === "clients" ? "bg-slate-700" : "hover:bg-slate-700"
-            }`}
-          >
-            Clients
-          </button>
-          <button
-            onClick={() => setView("projects")}
-            className={`block w-full text-left py-2 px-3 rounded-md transition ${
-              view === "projects" ? "bg-slate-700" : "hover:bg-slate-700"
-            }`}
-          >
-            Projects
-          </button>
-        </nav>
-        <div className="text-xs text-gray-400 text-center mt-auto">
+      <aside className="w-64 p-6 border-r border-slate-700 flex flex-col justify-between">
+        <div>
+          <h1 className="text-2xl font-bold mb-8 text-center text-indigo-400">
+            Freelance Dashboard
+          </h1>
+          <nav className="space-y-4">
+            <button
+              onClick={() => setView("dashboard")}
+              className={`block w-full text-left py-2 px-3 rounded-md transition ${
+                view === "dashboard" ? "bg-slate-700" : "hover:bg-slate-700"
+              }`}
+            >
+              Dashboard
+            </button>
+            <button
+              onClick={() => setView("clients")}
+              className={`block w-full text-left py-2 px-3 rounded-md transition ${
+                view === "clients" ? "bg-slate-700" : "hover:bg-slate-700"
+              }`}
+            >
+              Clients
+            </button>
+            <button
+              onClick={() => setView("projects")}
+              className={`block w-full text-left py-2 px-3 rounded-md transition ${
+                view === "projects" ? "bg-slate-700" : "hover:bg-slate-700"
+              }`}
+            >
+              Projects
+            </button>
+          </nav>
+        </div>
+        <div className="text-xs text-gray-400 text-center mt-6">
           © {new Date().getFullYear()} Freelance Tracker
         </div>
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 p-4 sm:p-6 md:p-8 overflow-auto">
+      <main className="flex-1 p-8 overflow-auto">
         {/* Header */}
         <header className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
-          <h2 className="text-2xl sm:text-3xl font-semibold tracking-wide capitalize">
+          <h2 className="text-3xl font-semibold tracking-wide capitalize">
             {view === "dashboard"
               ? "Dashboard Overview"
               : view === "clients"
@@ -99,7 +101,9 @@ const DashboardInner = () => {
         </header>
 
         {/* Dashboard Stats */}
-        {view === "dashboard" && <DashboardStats projects={filteredProjects} />}
+        {view === "dashboard" && (
+          <DashboardStats projects={filteredProjects} />
+        )}
 
         {/* Clients Section */}
         {(view === "dashboard" || view === "clients") && (
@@ -107,7 +111,7 @@ const DashboardInner = () => {
             <h3 className="text-2xl font-medium mb-4 border-b border-slate-700 pb-2">
               Clients
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredClients.map((c) => (
                 <ClientCard key={c.id} client={c} />
               ))}
@@ -126,15 +130,11 @@ const DashboardInner = () => {
             <h3 className="text-2xl font-medium mb-4 border-b border-slate-700 pb-2">
               Projects
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredProjects.length > 0 ? (
-                <ProjectList projects={filteredProjects} />
-              ) : (
-                <p className="text-gray-400 col-span-full text-center">
-                  No projects found.
-                </p>
-              )}
-            </div>
+            {filteredProjects.length > 0 ? (
+              <ProjectList projects={filteredProjects} />
+            ) : (
+              <p className="text-gray-400">No projects found.</p>
+            )}
           </section>
         )}
       </main>
