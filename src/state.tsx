@@ -23,7 +23,7 @@ const initialState: AppState = {
   clients: [
     { id: "c1", name: "Amani Consulting", country: "Rwanda", email: "hello@amani.rw" },
     { id: "c2", name: "PixelPerfect Agency", country: "Uganda", email: "hello@pixelperfect.ug" },
-    { id: "c3", name: "Kigali Design", country: "Kenya" } 
+    { id: "c3", name: "Kenya Design", country: "Kenya" } 
   ],
   projects: [
     { id: "p1", clientId: "c1", title: "Website for Amani", budget: 1500, status: "in-progress", paymentStatus: "unpaid" },
