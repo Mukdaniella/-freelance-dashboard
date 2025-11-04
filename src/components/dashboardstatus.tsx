@@ -10,7 +10,7 @@ interface DashboardStatsProps {
 
 export const DashboardStats: React.FC<DashboardStatsProps> = ({
   projects = [],
-  payments = [],
+  
 }) => {
   const totals = projects.length;
   const { paid, unpaid } = countPaidUnpaid(projects);

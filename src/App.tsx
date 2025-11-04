@@ -1,5 +1,5 @@
 // src/App.tsx
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { AppProvider, AppStateContext } from "./state";
 import { ClientCard } from "./components/clientcard";
 import { ProjectList } from "./components/projectlist";

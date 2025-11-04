@@ -1,5 +1,5 @@
 // src/state.tsx
-import React, { createContext, useReducer, Dispatch, ReactNode } from "react";
+import { createContext, useReducer, Dispatch, ReactNode } from "react";
 import { Client, Project, Payment } from "./model";
 
 // State shape

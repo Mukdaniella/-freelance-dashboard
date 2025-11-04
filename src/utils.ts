@@ -19,7 +19,7 @@ export function recordPayment(
   projectId: string,
   amount: number
 ): { success: boolean; payment?: Payment; error?: string } {
-  const project = state.projects.find(p => p.id === projectId);
+  const project = state.projects.find((p: Project) => p.id === projectId);
   if (!project) return { success: false, error: "Project not found" };
   if (amount <= 0) return { success: false, error: "Amount must be > 0" };
   const payment: Payment = { projectId, amount, date: new Date().toISOString() };

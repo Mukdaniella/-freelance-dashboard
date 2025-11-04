@@ -23,3 +23,9 @@ export interface Payment {
   amount: number;
   date: string; // ISO
 }
+export interface AppState {
+  clients: Client[];
+  projects: Project[];
+  payments: Payment[];
+}
+
